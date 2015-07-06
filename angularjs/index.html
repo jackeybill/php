@@ -23,6 +23,155 @@
     <h4>Current count: {{ counter }}</h4>
 </div>
 
+<input ng-model="to"
+       type="email"
+       placeholder="Recipient" />
+<textarea ng-model="emailBody"></textarea>
+
+<div id="emailPreview">
+    <pre>__ previewText __</pre>
+</div>
+
+<div ng-controller="CityController">
+    <select ng-model="city" ng-options="city.name for city in cities">
+        <option value="">Choose City</option>
+    </select>
+    Best City: {{ city.name }}
+</div>
+
+
+<script>
+    angular.module('myApp', [])
+            .controller('CityController', function($scope) {
+                $scope.cities = [
+                    {name: 'Seattle'},
+                    {name: 'San Francisco'},
+                    {name: 'Chicago'},
+                    {name: 'New York'},
+                    {name: 'Boston'}
+                ];
+            });
+</script>
+
+<div ng-init="myProperty = 'wow, this is cool'"></div>
+Surrounding scope: {{ myProperty }}
+<div my-inherit-scope-directive="SomeController">
+    Inside an directive with inherited scope: {{ myProperty }}
+</div>
+<div my-directive>
+    Inside myDirective, isolate scope: {{ myProperty }}
+    <div>
+
+        <script>
+            angular.module('myApp', [])
+                    .directive('myDirective', function() {
+                        return {
+                            restrict: 'A',
+                            scope: {}
+                        };
+                    })
+                    .directive('myInheritScopeDirective', function() {
+                        return {
+                            restrict: 'A',
+                            scope: true
+                        };
+                    })
+        </script>
+
+        <div ng-controller="ServiceController">
+            <label for="username">Type in a GitHub username</label>
+            <input type="text"
+                   ng-model="username"
+                   placeholder="Enter a GitHub username" />
+            <ul>
+                <li ng-repeat="event in events">
+                    <!--
+                      event.actor and event.repo are returned
+                      by the github API. To view the raw
+                      API, uncomment the next line:
+                    -->
+                    <!-- {{ event | json }} -->
+                    {{ event.actor.login }} {{ event.repo.name }}
+                </li>
+            </ul>
+        </div>
+
+        <script>
+            angular.module('myApp', ['myApp.services'])
+                    .controller('ServiceController', ['$scope', '$timeout', 'githubService',
+                        function($scope, $timeout, githubService) {
+                            $scope.events = null;
+                            $scope.setUsername = null;
+
+                            var timeout;
+                            $scope.$watch('username', function(newUsername) {
+                                if (newUsername) {
+                                    if (timeout) $timeout.cancel(timeout);
+                                    timeout = $timeout(function() {
+                                        $scope.setUsername = githubService.setUsername(newUsername);
+                                        githubService.events()
+                                                .success(function(data, status, headers) {
+                                                    $scope.events = data.data;
+                                                });
+                                    }, 350);
+                                }
+                            });
+                        }]);
+
+            angular.module('myApp.services', [])
+                    .factory('githubService', ['$http', function($http) {
+                        var githubUrl = 'https://api.github.com',
+                                githubUsername;
+
+                        var runUserRequest = function(path) {
+                            // Return the promise from the $http service
+                            // that calls the Github API using JSONP
+                            return $http({
+                                method: 'JSONP',
+                                url: githubUrl + '/users/' +
+                                githubUsername + '/' +
+                                path + '?callback=JSON_CALLBACK'
+                            });
+                        };
+
+                        return {
+                            events: function() {
+                                return runUserRequest('events');
+                            },
+                            setUsername: function(username) {
+                                githubUsername = username;
+                            }
+                        };
+                    }]);
+
+            var githubDecorator = function($delegate) {
+                var events = function(path) {
+                    var startedAt = new Date();
+                    var result = $delegate.events(path);
+
+                    // Events is a promise
+                    result.then(function() {
+                        console.log("Fetching events" +
+                        " took " +
+                        (new Date() - startedAt) + "ms");
+                    });
+                    return result;
+                }
+
+                return {
+                    setUsername: function(username) {
+                        return $delegate.setUsername(username);
+                    },
+                    events: events
+                };
+            };
+
+            angular.module('myApp')
+                    .config(function($provide) {
+                        $provide.decorator('githubService', githubDecorator);
+                    })
+        </script>
+
   <!-- Library files -->
   <script src="lib/angular.js"></script>
   <script src="lib/angular-route.js"></script>
