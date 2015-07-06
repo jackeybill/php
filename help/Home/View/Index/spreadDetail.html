@@ -1,0 +1,215 @@
+﻿<script type="text/ng-template" id="main/spreadDetail.tpl.html">
+
+    <div ng-include="'header.tpl.html'"></div>
+    <div id="main" class="min_contain">
+        <div id="spread" class="main clearfix">
+            <div class="spread_content">
+                <div class="panel panel-default" style="margin-top:0;">
+                    <!--               <div class="panel-heading" style="background-color:#FFF;"><span class="title">{{scene.name}}</span>&nbsp;&nbsp;<a style="padding-left:30px;font-size:16px;" target="_blank" ng-href="{{VIEW_URL + 'v-' + scene.code}}">查看场景</a></div> -->
+                    <div class="panel-body spread_ge">
+                        <div class="fl"><img height="110px" ng-src="{{PREFIX_FILE_HOST + scene.image.imgSrc}}"/>
+
+                            <div class="scene_info" style="padding-left:10px;">
+                                <div class="" style="border-bottom:1px solid #e6e6e6"><a style="font-size:18px;color:#666;"
+                                                                                         target="_blank"
+                                                                                         ng-href="{{VIEW_URL + 'v-' + scene.code}}">{{scene.name}}</a>
+                                </div>
+                                <div>场景状态：<span ng-show="scene.status == '1'" style="color:#08a1ef">开放</span><span
+                                        ng-show="scene.status == '0'">关闭</span></div>
+                                <div>修改时间：{{scene.updateTime | date:'yyyy年MM月dd日'}}</div>
+                                <div>创建时间：{{scene.createTime | date:'yyyy年MM月dd日'}}</div>
+                            </div>
+                        </div>
+                        <ul class="fr">
+                            <li><a href="#/main">
+                                <!-- <span class="glyphicon glyphicon-folder-close secondaryColor"></span> -->
+                                <div class="phone"><h1 class="secondaryColor"><span>{{scene.showCount || 0 | fixnum}}</span>
+                                </h1>
+
+                                    <h2>场景展示</h2></div>
+                            </a></li>
+                            <li><a href="#/main/customer">
+                                <!-- <span class="glyphicon glyphicon-list-alt secondaryColor"></span> -->
+                                <div class="show"><h1 class="secondaryColor"><span>{{scene.dataCount || 0 | fixnum}}</span>
+                                </h1>
+
+                                    <h2>已收集数据</h2></div>
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chang_contain">
+                    <div class="tab_two clearfix" ng-init="tabclass='tongji'">
+                        <div ng-class="{hover: tabclass == 'tongji'}" ng-click="tabclass='tongji'">
+                            场景统计
+                        </div>
+                        <div ng-class="{hover: tabclass == 'tuiguang'}" ng-click="tabclass='tuiguang'">推广方法</div>
+                    </div>
+                    <div class="tab_contain">
+                        <div class="changjing_tongji clearfix" ng-show="tabclass == 'tongji'">
+                            <div class="col-sm-2 fl">
+                                <div class="col-sm-12" style="padding: 0;">
+                                    <ul class="nav nav-tabs tabs-left" ng-init="tabid='viewinfo'">
+                                        <li ng-class="{active: tabid == 'viewinfo'}"><a
+                                                ng-click="tabid='viewinfo'">访问概况</a></li>
+                                        <li ng-class="{active: tabid == 'mobileinfo'}"><a ng-click="tabid='mobileinfo'">移动访问</a>
+                                        </li>
+                                        <li ng-class="{active: tabid == 'viewclick'}"><a ng-click="tabid='viewclick'">内容统计</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-xs-10 fr">
+                                <div class="view_info panel panel-default">
+                                    <div class="panel-body" ng-init="interval=7"><span class="btn btn-main"
+                                                                                       ng-class="{active: interval==1 }"
+                                                                                       ng-click="getLastdayStats();interval=1">昨天</span>
+                                    <span class="btn btn-main" ng-class="{active: interval==7 }"
+                                          ng-click="getLast7dayStats();interval=7">7天</span> <span class="btn btn-main"
+                                                                                                   ng-class="{active: interval==30 }"
+                                                                                                   ng-click="getLast30dayStats();interval=30">30天</span>
+                                    </div>
+                                </div>
+                                <div class="view_info panel panel-default" ng-show="tabid == 'viewinfo'">
+                                    <div class="panel-body">
+                                        <div ng-show="spreadViewGridOptions.data && spreadViewGridOptions.data.length > 0">
+                                            <div class="title">展示次数</div>
+                                            <canvas ng-if="viewLineChartData" line-chart data="{{viewLineChartData}}"
+                                                    width="750" height="200"/>
+                                            <div class="title" style="margin-top:20px;">收集数据</div>
+                                            <canvas ng-if="dataLineChartData" line-chart data="{{dataLineChartData}}"
+                                                    width="750" height="200"/>
+                                            <div class="data">
+                                                <div ui-grid="spreadViewGridOptions" class="myGrid1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="data"
+                                             ng-show="!spreadViewGridOptions.data || spreadViewGridOptions.data.length <= 0">
+                                            暂无数据
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="view_info panel panel-default" ng-if="tabid == 'mobileinfo'">
+                                    <div class="panel-body">
+                                        <div ng-show="spreadMobileGridOptions.data">
+                                            <div class="col-xs-4 text-center">
+                                                <div class="circle-data" style="color: #08a1ef;"><span num-change-anim
+                                                                                                       content="{{timelineData}}"><span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 text-center">
+                                                <div class="circle-data" style="color: #68dcc7;"><span num-change-anim
+                                                                                                       content="{{weixinGroupData}}"><span>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4 text-center">
+                                                <div class="circle-data" style="color: #9ad64b;"><span num-change-anim
+                                                                                                       content="{{weixinData}}"><span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="data" ng-show="spreadMobileGridOptions.data">
+                                            <div ui-grid="spreadMobileGridOptions" class="myGrid1"></div>
+                                        </div>
+                                        <div class="data"
+                                             ng-show="!spreadMobileGridOptions.data || spreadMobileGridOptions.data.length <= 0">
+                                            暂无数据
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="view_info panel panel-default" ng-show="tabid == 'viewclick'">
+                                    <div class="panel-body">
+                                        <div class="data" ng-show="spreadClickGridOptions.data">
+                                            <div ui-grid="spreadClickGridOptions" class="myGrid1"></div>
+                                        </div>
+                                        <div class="data"
+                                             ng-show="!spreadClickGridOptions.data || spreadClickGridOptions.data.length <= 0">
+                                            暂无数据
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tuiguang_content" ng-show="tabclass == 'tuiguang'">
+                            <div class="weixin_title ">
+                                <ul class="clearfix">
+                                    <li class="hover">微信推广</li>
+                                </ul>
+                            </div>
+                            <div class="tuiguang_one tuiguang_same"><h1><span>1. 微信扫描分享到朋友圈</span></h1>
+
+                                <div class="weixin_friend" style="margin-bottom:40px">
+                                    <ul class="clearfix">
+                                        <li>
+                                            <div qr-code qr-url="{{PREFIX_CLIENT_HOST + 'v-' + scene.code}}"></div>
+                                        </li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_05.png" alt=""/></li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_07.png" alt=""/></li>
+                                    </ul>
+                                </div>
+                                <div class="weixin_step">
+                                    <ul class="clearfix">
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_13.png" alt=""/></li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_15.png" alt=""/></li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_16.png" alt=""/></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tuiguang_two tuiguang_same"><h1><span>2.通过微信公众号群发</span></h1>
+
+                                <div class="weixin_list"><p class="medth">方法一</p>
+
+                                    <div class="weixin_list_con"><p>群发消息，在微信公众账号群发消息时推广场景地址</p>
+
+                                        <div class="weixin_address clearfix"><span class="" title="">{{url}}</span> <a
+                                                target="_blank" class=""
+                                                ng-href="{{VIEW_URL + 'v-' + scene.code}}">点击预览</a></div>
+                                        <div class="con_show clearfix">
+                                            <div style="color:#333;margin-top:20px;font-size:14px;font-weight:300;">
+                                                <p style="float:left;">主动发送消息：请将这段“</p>
+                                                <xmp style="color:#333;font-weight:300;font-family:'Microsoft Yahei';margin:0px;padding:0px 0 0 0;float:left;">
+                                                    <a href="{{url}}">{{scene.name}}</a>
+                                                </xmp>
+                                                <p style="line-height:20px;">”修改和粘贴到群发消息中，点击下面群发</p></div>
+                                        </div>
+                                        <p style="margin-top:20px;">自动回复消息：在自动回复时设置回复内容为场景地址和场景名称。</p>
+                                    </div>
+                                </div>
+                                <div class="weixin_list">
+                                    <p class="medth">方法二</p>
+                                    <div class="weixin_list_con">
+                                        <p>群发消息，在微信公众账号群发消息时推广场景二维码</p>
+                                        <div class="weixin_erwei weixin_address clearfix"><span>                                            <div
+                                                qr-code
+                                                qr-url="{{PREFIX_CLIENT_HOST + 'v-' + scene.code}}"></div></span><a
+                                                ng-href="{{PREFIX_SERVER_HOST + 'eqs/qrcode/' + scene.code + '.png'}}"
+                                                target="_blank" download>下载二维码</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tuiguang_one tuiguang_same"><h1><span>3.公众号自定义菜单链接场景</span></h1>
+
+                                <div class="weixin_friend" style="margin-bottom:40px">
+                                    <ul class="clearfix">
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_21.png" alt=""/></li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_24.png" alt=""/></li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_26.png" alt=""/></li>
+                                    </ul>
+                                </div>
+                                <div class="weixin_step">
+                                    <ul class="clearfix">
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_32.png" alt=""/></li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_33.png" alt=""/></li>
+                                        <li><img ng-src="{{CLIENT_CDN}}images/weixin_34.png" alt=""/></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-include="'footer.tpl.html'"></div>
+
+</script>

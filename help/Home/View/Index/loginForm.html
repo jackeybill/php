@@ -1,0 +1,132 @@
+﻿<script type="text/ng-template" id="security/login/form.tpl.html">
+
+  <div class="login-form-section">
+    <div class="login-content">
+      <form class="loginForm" novalidate="" ng-show="showLogin &amp;&amp; !sendPassword">
+        <div class="section-title">
+          <h3>{$Think.lang.LOGIN_SECTION_TITLE}</h3>
+        </div>
+
+        <div class="error-wrap">
+          <div class="alert alert-danger" role="alert" ng-show="authReason">
+            {{authReason}}
+          </div>
+
+          <div class="alert alert-danger" role="alert" ng-show="authError">
+            {{authError}}
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group">
+            <input class="form-control" id="username" name="userEmail" placeholder="{$Think.lang.USER_EMAIL}"
+                   type="text" ng-model="user.email" ng-keyup="$event.keyCode == 13 ? login() : null" required="" autofocus="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group">
+            <input class="form-control" name="pass" placeholder="{$Think.lang.USER_PASSWORD}" type="password"
+                   ng-model="user.password" ng-keyup="$event.keyCode == 13 ? login() : null" required="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap validate clearfix" ng-if="isValidateCodeLogin">
+          <div>
+            <script type="text/javascript" load-script="" ng-src="{{validateCodeUrl}}"/>
+          </div>
+            <!--
+            <label class="input-label mid" for="validateCode">验证码</label>
+            <div class = "input-group" style = "display:inline-block;">
+                <input name="validateCode" id="validateCode" ng-model="user.validateCode" style="width: 100px;
+                       font-weight: bold; display: inline-block; height: 32px;" type="text" ng-keyup="$event.keyCode == 13 ? login() : null" add-class>
+            </div>
+            <img class="mid validateCode" onclick="$(\'.validateCodeRefresh\').click();" ng-src="{{validateCodeSrc}}">
+            <a class="mid validateCodeRefresh" onclick="$(\'.validateCode\').attr(\'src\', PREFIX_URL + \'servlet/validateCodeServlet?\'+new Date().getTime());" href="javascript:">看不清楚</a>
+            -->
+        </div>
+
+        <div class="login-form-action clearfix">
+          <div class="pull-left" >
+              <!--
+              <a ng-click = "openRegister()"><ins>还没注册？</ins></a>
+              -->
+              <input style="margin-top:0px;" name="rememberMe" ng-model="user.rememberMe" type="checkbox" value="true">{$Think.lang.USER_REMEMBERME}
+          </div>
+
+          <div class="pull-right">
+              <!--a ng-click = "showLogin = false;"><ins>忘记密码?</ins></a> -->
+              <a ng-click = "rotate(showLogin)"><ins>{$Think.lang.USER_FORGETPW}</ins></a>
+          </div>
+        </div>
+
+        <div class="login-form-action clearfix">
+          <button type="button" class="btn btn-success pull-left blue-btn" ng-click="login()">{$Think.lang.USER_LOGIN}</button>
+          <button type="button" class="btn btn-success pull-right reset-btn" ng-click="openRegister()">{$Think.lang.USER_REGISTER}</button>
+        </div>
+
+        <div class="login-form-action clearfix third-party" style="line-height:30px;display:none;">
+          <span>{$Think.lang.USER_LTPA}</span> <a ng-href="{{weiChatUrl}}" class="wx_login"></a> <a ng-href="{{qqUrl}}" class="qq_login"></a>
+            <!-- <a ng-href="{{weiboUrl}}" class="weibo_login"><span class="weibo_title"></span></a> -->
+        </div>
+      </form>
+
+      <form class="retrieveForm" ng-show="!showLogin &amp;&amp; !sendPassword" novalidate="">
+        <div class="section-title">
+          <h3>{$Think.lang.USER_GETPW}</h3>
+        </div>
+
+        <div class="error-wrap">
+          <div class="alert alert-danger" role="alert" ng-show="retrieveError">
+            {{retrieveError}}
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group">
+            <input class="form-control" id="retrieveUsername" name="userEmail" placeholder="{$Think.lang.USER_EMAILBOX}"
+                   type="text" ng-model="retrieve.email" ng-keyup="$event.keyCode == 13 ? retrievePassword() : null" required="" autofocus="">
+          </div>
+        </div>
+
+          <!--
+          <div class="textbox-wrap validate">
+            <label class="input-label mid" for="validateCode">验证码</label>&nbsp;
+            <div class = "input-group" style = "display:inline-block;">
+                <input name="validateCode" id="retrieveretrieveValidateCode" ng-model="retrieveretrieve.validateCode" style="width: 100px; font-weight: bold; display: inline-block; height: 32px;" type="text" ng-keyup="$event.keyCode == 13 ? retrieveretrievePassword() : null" add-class>
+            </div>
+            <img class="mid validateCode" onclick="$(\'.validateCodeRefresh\').click();" ng-src="{{validateCodeSrc}}">&nbsp;
+            <a class="mid validateCodeRefresh" onclick="$(\'.validateCode\').attr(\'src\', PREFIX_URL + \'servlet/validateCodeServlet?\'+new Date().getTime());" href="javascript:">看不清楚</a>
+          </div>
+          -->
+
+        <div class="login-form-action clearfix">
+          <div>
+            <script type="text/javascript" load-script="" ng-src="{{validateCodeUrl}}"/>
+          </div>
+
+          <div class="pull-right" style="padding-top: 5px;">
+            <a ng-click="rotate(showLogin)"><ins>{$Think.lang.USER_REMEMBERED}</ins></a>
+          </div>
+        </div>
+
+        <div class="login-form-action clearfix">
+          <button type="button" class="btn btn-success pull-left blue-btn" ng-click="retrievePassword()">{$Think.lang.USER_GETPW}</button>
+          <button type="button" class="btn btn-success pull-right reset-btn" ng-click="reset()">{$Think.lang.USER_RESET}</button>
+        </div>
+      </form>
+
+      <div ng-show="sendPassword" class="section-title text-center">
+        <h3>{$Think.lang.USER_SUCCESSMSG}</h3>
+      </div>
+
+      <div class="send_email" ng-show="sendPassword">
+          {$Think.lang.USER_SENTPW}
+      </div>
+
+      <div class="login-form-tip" ng-show="!sendPassword &amp;&amp; !unExist">
+        <h6>{$Think.lang.USER_SUGGEST}</h6>
+      </div>
+    </div>
+  </div>
+</script>

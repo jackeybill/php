@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="AppCtrl">
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="一秀移动场景应用自营销管家,为中小微企业或团队提供业务场景应用展示、潜在客户在线报名收集、管理和二次营销" />
+<meta name="keywords" content="一秀,场景魔方,微场景,免费,免费移动场景应用自营销管家,移动场景自营销管家,移动场景自营销工具,活动自营销管家,场景展示,免费的报名页,收集潜在客户,二次营销,轻CRM,提高移动场景营销效果" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="http://e.wesambo.com/favicon.ico" type="image/x-icon" />
+<title>摇一摇|移动场景应用自营销管家</title>
+<script type="text/javascript">
+	// 同一时间 2015.03.23
+  var PREFIX_URL = "http://"+window.location.host+"/json/";
+  var VIEW_URL = "http://"+window.location.host+"/";
+  var JSON_URL = "http://"+window.location.host+"/index.php";
+  var PREFIX_S1_URL = "http://"+window.location.host+"/";
+  var PREFIX_HOST = "http://"+window.location.host+"/";
+  var SYS_FILE_HOST = "http://e.wesambo.com/Uploads/syspic/";
+  var PREFIX_FILE_HOST = "http://"+window.location.host+"/userfiles/";
+  var PREFIXSYS_FILE_HOST = "http://e.wesambo.com/Uploads/";
+  var USER_FILE_HOST = PREFIX_FILE_HOST;
+  var CLIENT_CDN = "http://"+window.location.host+"/Public/css/";
+  var INTERVAL_OBJ = {}; // 用于图集使用的定时器对象
+  function gt_custom_ajax(result, selector) {selectorA = selector;if (result) {challenge = selector(".geetest_challenge").value;validate = selector(".geetest_validate").value;seccode = selector(".geetest_seccode").value;submit = true;}
+  }
+function getCookie(c_name){
+　　　　if (document.cookie.length>0){
+　　　　　　c_start=document.cookie.indexOf(c_name + "=");　　
+　　　　　　if (c_start!=-1){ 
+　　　　　　　　c_start=c_start + c_name.length+1;
+　　　　　　　　c_end=document.cookie.indexOf(";",c_start)　;
+　　　　　　　　if (c_end==-1) c_end=document.cookie.length　;　
+　　　　　　　　return unescape(document.cookie.substring(c_start,c_end));
+　　　　　　} 
+　　　　}
+　　　　return ""
+　　}　　
+</script>
+<!--
+IE8 support, see AngularJS Internet Explorer Compatibility http://docs.angularjs.org/guide/ie
+For Firefox 3.6, you will also need to include jQuery and ECMAScript 5 shim
+-->
+<!--[if lt IE 9]>
+<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/es5-shim/2.2.0/es5-shim.js"></script>
+<script>document.createElement('ui-select');document.createElement('ui-select-match');document.createElement('ui-select-choices');</script>
+<![endif]-->
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="Public/css/scenecommon.css">
+<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="Public/css/uicss.css">
+<link rel="stylesheet" type="text/css" href="Public/css/scene.css">
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.2.23/angular.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.2.23/angular-route.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.2.23/angular-mocks.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.2.23/angular-animate.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.2.23/angular-sanitize.js"></script>
+<script type="text/javascript" src="http://libs.baidu.com/jqueryui/1.10.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="Public/js/scenecommon1.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/angular.js/1.2.23/i18n/angular-locale_zh-cn.js"></script>
+<script type="text/javascript" src="Public/js/scenecommon2.js"></script>
+<script type="text/javascript" src="Public/js/scene.js"></script>
+<style>.myGrid {width: 998px;height: 550px;}.myGrid1 {width: 650px;height: 550px;}.choose_template .main .content .mask ul li .roll :hover .cc{display: block;}</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head>
+<body>
+<div class='notifications top-right'></div>
+<div id="eq_main" ng-view></div>
+
+
+<!--ng-include src="'common_header.html'"></ng-include-->
+<!-- -->
+<!-- 包含Public目录下面的header模板 -->
+<include file="Public:header" />
+
+<!-- 包含当前模板目录下面的createNew模板 -->
+<include file="createNew"/>
+
+<!-- 如果当前使用了多模板主题功能，还可以包含其他主题的模板 -->
+<include file="blue:User:read" />
+
+<!-- 包含完整模板文件的方式 -->
+<include file="./Tpl/default/header.html" />
+
+<!-- 用变量的方式 -->
+<include file="$filename" />
+
+<!-- 参数传递 & 嵌套包含模板-->
+<include file="Public:header" title="ThinkPHP框架" keywords="开源WEB开发框架"/>
+<!--
+    <title>[title]</title>
+	<meta name="keywords" content="[keywords]" />
+	<body>
+	<include file="Public:menu" />
+-->
+
+<!-- 包含多个模板 -->
+<include file="Public:header,Public:menu,./Tpl/default/menu.html" />
+
+<!-- import标签 支持判断加载，例如下面首先判断name变量是否设置-->
+<import type='js' file="Js.Util.Array,Js.Util.Date" basepath="./Common"/>
+<import type='css' file="Css.common" value="Think.get.name|isset" />
+
+<!-- Type属性默认是js; 导入的文件中含有“.”号 导入 /Public/Js/Util/Array.min.js 资源文件-->
+<import file="Js.Util.Array#min" />
+
+<!-- Load标签无需指定type属性，系统会自动根据后缀自动判断, 支持条件判断调用 -->
+<load href="/Public/Js/Date.js?v=235" value="name"/>
+<load href="!-PUBLIC-!/Js/Common.js,/Public/Css/common.css" />
+<js href="/Public/Js/Common.js" />
+<css href="/Public/Css/common.css" />
+
+<iterate name="list" id="vo">
+    {$vo.name}
+</iterate>
+
+<!--输出 list 的第 5～15 条记录-->
+<iterate name="list" id="vo" offset="5" length='10'>
+    {$vo.name}
+</iterate>
+
+<!--输出偶数记录-->
+<iterate name="list" id="vo" mod="2" >
+    <eq name="mod" value="1">
+        {$vo.name}
+    </eq>
+</iterate>
+
+<!--// 输出 key-->
+<iterate name="list" id="vo" key="k" >
+    {$k}.{$vo.name}
+</iterate>
+
+<!--//子循环输出-->
+<volist name="list" id="vo">
+    <iterate name="vo['sub']" id="sub">
+        {$sub.name}
+    </iterate>
+</volist>
+
+<!--Switch 标签-->
+<switch name="name">
+    <case value="1">value1</case>
+    <case value="2">value2</case>
+    <default />default
+</switch>
+<!--其 中 name 属性可以使用函数以及系统变量，例如：-->
+<switch name="Think.get.userId|abs">
+    <case value="1">admin</case>
+    <default />default
+</switch>
+<!--也可以对 case 的 value 属性使用变量，例如：-->
+<switch name="userId">
+    <case value="$adminId">admin</case>
+    <case value="$memberId">member</case>
+    <default />default
+</switch>
+
+<!--比较标签
+<eq name="name" value="value">value</eq> // name 变量的值等于 value 就输出
+<neq name="name" value="value">value</neq> // name 变量的值不等于 value 就输出
+<gt name="name" value="5">value</gt> // name 变量的值大于 5 就输出
+<egt name="name" value="5">value</egt> // name 变量的值大于等于 5 就输出
+<lt name="name" value="5">value</lt> // name 变量的值小于 5 就输出
+<elt name="name" value="5">value</elt> // name 变量的值小于等于 5 就输出
+-->
+
+<!--//其实上面的所有标签都是 compare 标签的别名 其中 type 属性的值就是上面列出的判断标签名称-->
+<!--// name 变量的值等于 5 就输出-->
+<compare name="name" value="5" type="eq">value</compare>
+
+<!--If标签-->
+<if condition="$name eq 1 "> value1
+    <elseif condition="$name eq 2" />value2
+    <else /> value3
+</if>
+
+<!--系统变量-->
+{$Think.server.script_name }
+{$Think.session.session_id|md5 }
+{$Think.get.pageNumber }
+{$Think.cookie.name }
+{$Think.const.__FILE__ }
+{$Think.const.MODULE_NAME }
+
+<!--特殊变量 ，由 ThinkPHP 系统定义的常量-->
+{$Think.version }
+{$Think.now }
+
+<!--快捷输出
+
+{:function(…)} //执行方法并输出返回值
+{~function} //执行方法不输出
+{@var} //输出 Session 变量 和{$Think.session.var}等效
+{&var} //输出配置参数
+{%var} //输出语言变量
+{.var} //输出 GET 变量
+{^var} //输出 POST 变量
+{*var} //输出常量
+-->
+
+{$Think.lang.lang_var}
+<!--转换成大写 {$varname|function1|function2=arg1,arg2,### } -->
+{$title|strtoupper}
+
+{$webTitle|md5|strtoupper|substr=0,3}
+
+<!--//三元运算符-->
+{$status?'正常':'错误'}
+
+
+<volist name="list" id="vo" offset="5" length='10' empty="暂时没有数据">
+    {$vo.name}
+</volist>
+
+<foreach name="list" item="vo">
+    {$vo.id}:{$vo.name}
+</foreach>
+
+<if condition="$id lt 5 ">value1
+    <else /> value2
+</if>
+
+{$create_time|date="y-m-d",###} // <?php echo (date("y-m-d",$create_time)); ?> //该变量是第二个参数，因此需要用###标识变量位置
+{$data.name|substr=0,3}     //前面输出的变量在后面定义的函数的第一个参数 {$data.name|substr=###,0,3}
+{$name|md5|strtoupper|substr=0,3} // <?php echo (substr(strtoupper(md5($name)),0,3)); ?>
+{$user.nickname|default="这家伙很懒，什么也没留下"}
+
+<taglib name="html,article" /> // 导入多个标签库
+<article:read name="hello" id="data" >
+    {$data.id}:{$data.title}
+</article:read>
+
+
+<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?9f9481778d1928344a0475cab76ce937";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})();</script>
+</body>
+</html>

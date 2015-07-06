@@ -1,0 +1,132 @@
+<script type="text/ng-template" id="security/register/register.tpl.html">
+    <div class="login-form-section">
+    <div class="login-content">
+      <form novalidate="">
+        <div class="section-title">
+          <h3>{$Think.lang.USER_REGISTER}</h3>
+        </div>
+
+        <div class="error-wrap">
+          <div class="alert alert-danger" role="alert" ng-show="regErr">
+            {{regErr}}
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >店舗名称・屋号（法人名）</h3>
+            </div>
+            <input class="form-control" id="shopname" name="shopname" placeholder="例）APカレーショップ　東新宿店　（株式会社アプリックス）" 
+                   type="text" ng-model="user.shopname" ng-keyup="$event.keyCode == 13 ? register() : null" required="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >営業内容（商品・業態等）</h3>
+            </div>
+            <input class="form-control" id="business" name="business" placeholder="例）カレーチェーン店" 
+                   type="text" ng-model="user.business" ng-keyup="$event.keyCode == 13 ? register() : null" required="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >店舗住所</h3>
+            </div>
+            <input class="form-control" id="address" name="address" placeholder="例）東京都新宿区新宿六丁目27-30" 
+                   type="text" ng-model="user.address" ng-keyup="$event.keyCode == 13 ? register() : null" required="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >責任者氏名</h3>
+            </div>
+            <input class="form-control" id="officername" name="officername" placeholder="例）山田太郎" 
+                   type="text" ng-model="user.officername" ng-keyup="$event.keyCode == 13 ? register() : null" required="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >店舗電話番号</h3>
+            </div>
+            <input class="form-control" id="phone" name="phone" placeholder="例）03-0000-0000" 
+                   type="text" ng-model="user.phone" ng-keyup="$event.keyCode == 13 ? register() : null" required="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >メールアドレス（登録用）</h3>
+            </div>
+            <input class="form-control" id="username1" name="userEmail" placeholder="{$Think.lang.USER_EMAILBOX}" type="text" ng-model="user.email"
+                   ng-keyup="$event.keyCode == 13 ? register() : null" ng-blur="checkUpperCase();" required="" autofocus="">
+          </div>
+        </div>
+
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >パスワード</h3>
+            </div>
+            <input class="form-control" name="pass" placeholder="{$Think.lang.USER_PASSWORD}" type="password"
+                   ng-model="user.password" ng-keyup="$event.keyCode == 13 ? register() : null" required="">
+          </div>
+        </div>
+
+		<!--
+        <div class="textbox-wrap">
+          <div class="input-group-register">
+          	<div class="s-title">
+            	<h3 >パスワード（確認用）</h3>
+            </div>
+            <input class="form-control" name="repeatPass" placeholder="{$Think.lang.USER_CONFIRMPW}" type="password" ng-model="user.repeatPassword"
+                   ng-keyup="$event.keyCode == 13 ? register() : null" required="">
+          </div>
+        </div>
+        -->
+
+        <!--
+        <div class="login-form-action clearfix">
+          <div class="checkbox pull-left">
+            <div class="custom-checkbox">
+              <div class="icheckbox_square-blue" ng-class="{checked: user.agreement == true, hover: user.agreement == false &amp;&amp; hovered == true}" style="position: relative;">
+                <input type="checkbox" ng-mouseenter="hovered = true;" ng-mouseleave="hovered = false;" ng-model="user.agreement" name="iCheck"
+                       style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);">
+                  //<ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins>
+              </div>
+            </div>
+                <span class="checkbox-text pull-left">我已阅读并同意<a href="#/agreement" target="_blank">《一秀微场景用户注册协议》</a></span>
+           </div>
+
+           <div class="checkbox pull-right">
+             <a ng-click="openLogin()"><ins>已有账户?</ins></a>
+           </div>
+         </div>
+         -->
+
+         <div class="login-form-action clearfix">
+           <button style="width: 60%; margin-top: 10px; margin-left: 90px" type="submit" ng-click="register()" class="btn btn-success pull-left blue-btn">{$Think.lang.USER_REGISTER}</button>
+           <!-- button type="button" ng-click="openLogin()" class="btn btn-success pull-right reset-btn">{$Think.lang.USER_LOGIN}</button> -->
+         </div>
+
+         <div ng-show="false" class="login-form-action clearfix third-party" style="line-height:30px;">
+           <span>{$Think.lang.USER_LTPA}</span> <a ng-href="{{weiChatUrl}}" class="wx_login"></a> <a href="{{qqUrl}}" class="qq_login"></a>
+           <!-- <a ng-href="{{weiboUrl}}" class="weibo_login"><span class="weibo_title"></span></a> -->
+        </div>
+
+        <div class="login-form-tip">
+          <h6>{$Think.lang.USER_SUGGEST}</h6>
+        </div>
+      </form>
+    </div>
+  </div>
+</script>

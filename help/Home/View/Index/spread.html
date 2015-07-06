@@ -1,0 +1,111 @@
+﻿<script type="text/ng-template" id="main/spread.tpl.html">
+
+    <div ng-include="'header.tpl.html'"></div>
+    <div id="main" class="min_contain">
+        <div class="main clearfix">
+            <ul class="create_btn_group">
+                <li class="btn-main" ng-show="isEditor" page-tpl-types ng-href="#/scene/create/2442?pageId=1">页面模板</li>
+                <!--
+                <li><a class="btn-main hint--bottom hint--rounded" ng-click="createScene()" data-hint = "通过组件工具和页面模板创建">自主创建</a></li>
+                <li><a class="btn-secondary hint--rounded hint--bottom" href="#/scene" data-hint = "在推荐的样例场景上直接修改">样例创建</a></li>
+                -->
+                <!--
+                    <li><a class="btn-main hint--bottom hint--rounded" href="#/scene" data-hint = "空白创建或通过已有样例创建场景">创建场景</a></li>
+                 -->
+            </ul>
+            <div class="info">
+                <ul class="clearfix">
+                    <li><a href="#/main">
+                        <!-- <span class="glyphicon glyphicon-folder-close secondaryColor"></span> -->
+                        <div class="phone"><h1 class="secondaryColor"><span>{{allPageCount || 0 | fixnum}}</span></h1>
+
+                            <h2>场景总计</h2></div>
+                    </a></li>
+                    <li><a href="#/main">
+                        <!-- <span class="glyphicon glyphicon-folder-open lightVioletColor"></span> -->
+                        <div class="kai"><h1 class="lightVioletColor"><span>{{openCount || 0 | fixnum}}</span></h1>
+
+                            <h2>开放场景</h2></div>
+                    </a></li>
+                    <li>                    <!-- <span class="glyphicon glyphicon-eye-open baseColor"></span> -->
+                        <div class="eye"><h1 class="lightBlueColor"><span>{{allPageView || 0 | fixnum}}</span></h1>
+
+                            <h2>场景展示</h2></div>
+                    </li>
+                    <li>                    <!-- <span class="glyphicon glyphicon-list-alt secondaryColor"></span> -->
+                        <div class="show"><h1 class="secondaryColor"><span>{{allSceneDataCount || 0 | fixnum}}</span></h1>
+
+                            <h2>已收集数据</h2></div>
+                    </li>
+                </ul>
+            </div>
+
+            <canvas ng-if="viewLineChartData" line-chart data="{{viewLineChartData}}"
+                    width="750" height="200"/>
+
+            <tabset justified="true">
+                <div class="content clearfix">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="col-xs-4 text-center">
+                                <div class="circle-data" style="color: #08a1ef;"><span num-change-anim
+                                                                                       content="{{allPageView}}"><span></span></span>
+                                </div>
+                                <div class="h5">场景展示</div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div class="circle-data" style="color: #9ad64b;"><span num-change-anim
+                                                                                       content="{{allSceneDataCount}}"><span></span></span>
+                                </div>
+                                <div class="h5">收集数据</div>
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                <div class="circle-data" style="color: #68dcc7;"><span num-change-anim
+                                                                                       content="{{dataRatio}}"><span></span>%</span>
+                                </div>
+                                <div class="h5">转换率</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data">
+                        <!-- <div external-scopes="spreadScope" ui-grid="spreadGridOptions" class="myGrid"></div> -->
+                        <table class="col-sm-12 table table-bordered text-center data-table">
+                            <thead>
+                            <tr>
+                                <th>场景</th>
+                                <th>展示次数</th>
+                                <th>收集数据</th>
+                                <th>转化率</th>
+                                <th>详情</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-class="{hovercolor: trIndex==$index}" ng-repeat="spreadData in spreadDatas"
+                                ng-mouseenter="addColor($index)" ng-mouseleave="removeColor()">
+                                <td>{{spreadData.name}}</td>
+                                <td>{{spreadData.showCount}}</td>
+                                <td>{{spreadData.dataCount}}</td>
+                                <td>{{spreadData.showCount == 0 ? "0.00%":(spreadData.dataCount *
+                                    100/spreadData.showCount).toFixed(2) + "%"}}
+                                </td>
+                                <td><a class="glyphicon glyphicon-stats spread-detail" title="查看详情"
+                                       ng-click="viewDetail(spreadData)"></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <pagination style="float: left" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页"
+                                    max-size="10" items-per-page="10" total-items="totalItems" ng-model="currentPage"
+                                    ng-change="pageChanged(currentPage)" boundary-links="true" rotate="true"
+                                    num-pages="numPages"></pagination>
+                        <div class="current_page"><input type="text" ng-model="toPage"
+                                                         ng-keyup="$event.keyCode == 13 ? pageChanged(toPage) : null"> <a
+                                ng-click="pageChanged(toPage)" class="go">GO</a>
+                            <span>当前: {{currentPage}} / {{numPages}} 页</span></div>
+                    </div>
+                </div>
+            </tabset>
+        </div>
+    </div>
+    <div ng-include="'footer.tpl.html'"></div>
+
+</script>

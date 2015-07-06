@@ -1,0 +1,37 @@
+﻿<script type="text/ng-template" id="scene/createNew.tpl.html">
+
+    <div class="modal-header">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <span>新建场景</span>
+    </div>
+    <form name="resetForm" novalidate class="login-form">
+        <div class="login_form">
+            <div class="alert alert-warning" role="alert" ng-show="authReason"> {{authReason}}</div>
+            <div class="alert alert-danger" role="alert" ng-show="authError"> {{authError}}</div>
+            <div class="input-wrap">
+                <input name="name" placeholder="请填写场景名称" type="text" ng-model="scene.name" required autofocus>
+            </div>
+            <div class="input-wrap">
+                <select ng-model="scene.type" ng-options="scenetype.name for scenetype in scene.types"> </select>
+            </div>
+            <div class="input-wrap" ng-show="false">
+                <select ng-model="scene.pageMode" ng-options="pagemode.name for pagemode in pagemodes"></select>
+            </div>
+            <div class="input-wrap">
+                <select ng-model="scene.deviceID" ng-options="device.name for device in scene.devices"></select>
+            </div>
+            <div class="input-wrap">
+                <input name="subtitle" placeholder="请填写场景副标题" type="text" ng-model="scene.subtitle" required>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-main" ng-click="create()" ng-disabled=\'form.$invalid\'>创&nbsp;&nbsp;建</div>
+                <div class="btn-grey0" ng-click="cancel()" ng-disabled=\'form.$invalid\'>取&nbsp;&nbsp;消</div>
+            </div>
+            <p>
+                特别说明：根据相关部门要求，暂不允许药品，医疗机构，医疗器械场景内容发布，请您理解。
+                <a href="javascript:void(0);" style="font-weight: 400; color: red;">请查看审核规则</a>
+            </p>
+        </div>
+    </form>
+
+</script>

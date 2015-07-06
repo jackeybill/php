@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p id="demo"></p>
+
+<script>
+    //document.getElementById("demo").innerHTML = new Date("03-25-2015");
+    //1434443371
+    alert( formatDate(1434443375) );
+     function formatDate(date){
+        var d = new Date(date*1000);
+        var str = ''+d.getFullYear()+d.getMonth()+d.getDate();
+        return str;
+    }
+
+</script>
+
+</body>
+</html>
